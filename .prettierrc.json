@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    "prettier-plugin-tailwindcss"
+  ],
+  "tailwindFunctions": [
+    "cn",
+    "clsx"
+  ],
+  "printWidth": 100
+}

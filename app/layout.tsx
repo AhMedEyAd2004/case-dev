@@ -1,15 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Recursive } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/nav-bar";
+import { Separator } from "@/components/ui/separator";
+import WindowDimensions from "@/components/breakpoint";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const recursice = Recursive({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-recursive",
 });
 
 export const metadata: Metadata = {
@@ -25,8 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${recursice.variable} font-recursive overflow-x-hidden bg-slate-50 antialiased`}
       >
+        <Navbar />
+        {/* <WindowDimensions /> */}
         {children}
       </body>
     </html>
