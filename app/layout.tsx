@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Recursive } from "next/font/google";
+import {  Recursive } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/nav-bar";
-import { Separator } from "@/components/ui/separator";
 import WindowDimensions from "@/components/breakpoint";
+import Footer from "@/components/Footer";
+import { Toaster } from "sonner";
 
 const recursice = Recursive({
   subsets: ["latin"],
@@ -26,8 +27,12 @@ export default function RootLayout({
         className={`${recursice.variable} font-recursive overflow-x-hidden bg-slate-50 antialiased`}
       >
         <Navbar />
-        {/* <WindowDimensions /> */}
-        {children}
+        <WindowDimensions />
+        <main className="flex min-h-[calc(100dvh-4rem)] flex-col">
+          <div className="flex-1">{children}</div>
+          <Footer />
+        </main>
+        <Toaster />
       </body>
     </html>
   );

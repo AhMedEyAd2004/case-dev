@@ -9,6 +9,12 @@ import React, { HTMLAttributes } from "react";
     left: 0;
     */
 
+/*
+    The fill prop requires the parent to have position:
+    relative (or absolute/fixed) and a defined size (width and height).
+     The wrapper div has relative but needs an explicit width — 
+     fill images can't infer size from just aspect-ratio alone. */
+
 export default function Phone({
   dark = false,
   className,
@@ -16,20 +22,17 @@ export default function Phone({
   ...props
 }: { dark?: boolean; className?: string; imgSrc: string } & HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      className={cn("pointer-events-none relative z-50 w-fit overflow-hidden", className)}
-      {...props}
-    >
-      <Image
-        alt="phone-template"
-        src={dark ? "/phone-template-dark-edges.png" : "/phone-template-white-edges.png"}
-        width={256}
-        height={523}
-        className="pointer-events-none h-130.75! w-[256px]! object-cover select-none"
-      />
+    <div className={cn("pointer-events-none w-[256px]", className)} {...props}>
+      <div className="relative z-50 aspect-256/523 w-full overflow-hidden">
+        <Image
+          alt="phone-template"
+          src={dark ? "/phone-template-dark-edges.png" : "/phone-template-white-edges.png"}
+          fill
+        />
 
-      <div className="absolute inset-0 -z-10">
-        <Image src={imgSrc} alt="dog" width={256} height={523} className="object-cover" />
+        <div className="absolute inset-0 -z-10">
+          <Image src={imgSrc} alt="dog" fill />
+        </div>
       </div>
     </div>
   );
