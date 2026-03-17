@@ -8,5 +8,5 @@ export async function proxy(request: NextRequest) {
     headers: request.headers,
   });
   console.log("Session:", session);
-  if (!session) return NextResponse.redirect(new URL("/home", request.url));
+  // if (!session) return NextResponse.redirect(new URL("/home", request.url));
 }
