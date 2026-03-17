@@ -22,9 +22,9 @@ export default function Home() {
     faster*/
 
   return (
-    <>
+    <div className="min-h-[calc(100dvh-4rem)] pt-15 lg:pt-55">
       <MaxContainerWrap>
-        <section className="mb-20 grid grid-rows-2 place-items-center pt-15 lg:mb-30 lg:grid-cols-3 lg:grid-rows-1 lg:pt-45">
+        <section className="mb-20 grid grid-rows-2 place-items-center lg:mb-30 lg:grid-cols-3 lg:grid-rows-1">
           <div className="relative flex flex-col lg:col-span-2">
             <Image
               src={"/snake-1.png"}
@@ -161,6 +161,6 @@ export default function Home() {
           </Button>
         </MaxContainerWrap>
       </section>
-    </>
+    </div>
   );
 }

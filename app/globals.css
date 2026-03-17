@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+/* @source inline("bg-zinc-900 border-zinc-900 bg-blue-900 border-blue-900 bg-rose-900 border-rose-900"); */
+/* @source "../validators/option-validator.ts"; */
 
 @custom-variant dark (&:is(.dark *));
 
@@ -115,6 +117,8 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* global resets and default HTML element styles. Things that apply without a class,
+ like styling h1, body, a by default. Lowest specificity. */
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -122,6 +126,15 @@
   body {
     @apply bg-background text-foreground;
   }
+}
 
-  
+/* @utility — custom utility classes that behave exactly 
+like Tailwind's own utilities (flex, text-sm, etc). They get IntelliSense, 
+they work with variants like hover:, md:, dark:,and 
+they're only added to the CSS if you actually use the class. */
+@utility scrollable-parent {
+  @apply *:overflow-y-auto;
+  @apply [&_::-webkit-scrollbar-thumb]:rounded-full [&_::-webkit-scrollbar-thumb]:bg-green-500/80;
+  @apply [&_::-webkit-scrollbar-track]:rounded-full [&_::-webkit-scrollbar-track]:bg-green-500/40;
+  @apply [&_::-webkit-scrollbar]:w-1.5 [&_::-webkit-scrollbar-track]:my-40;
 }

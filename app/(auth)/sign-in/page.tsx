@@ -2,7 +2,7 @@
 import { signIn } from "@/lib/auth/auth-client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, SubmitEvent, useState } from "react";
+import { ChangeEvent, SubmitEvent, useEffect, useRef, useState } from "react";
 
 export default function SignInPage() {
   const [formData, setFormData] = useState({
@@ -11,6 +11,7 @@ export default function SignInPage() {
   });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const configIdRef=useRef<string|undefined>(undefined)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -20,14 +21,21 @@ export default function SignInPage() {
     }));
   };
 
+  useEffect(() => {
+    const configId = localStorage.getItem("configId");
+    if (configId) configIdRef.current=configId;
+    console.log(configIdRef.current)
+  }, []);
+
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
     try {
       const result = await signIn.email({ ...formData });
-      if (result.error) console.log(result.error);
-      else router.push("/dashboard");
+      if (result.error) throw new Error(result.error.message);
+      else if (configIdRef.current) router.push(`/config/preview?id=${configIdRef.current}`)
+      else router.push("/home");
     } catch (error) {
       console.error("Error during sign in:", error);
     } finally {

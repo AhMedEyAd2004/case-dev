@@ -10,7 +10,7 @@ export default function MaxContainerWrap({
 }) {
   // max-w-7xl,mx-auto is good standard stay with it
   return (
-    <div className={cn("mx-auto h-full max-w-7xl px-2.5 xl:px-20", className)} {...props}>
+    <div className={cn("mx-auto h-full max-w-7xl md:px-25 px-2.5 xl:px-20", className)} {...props}>
       {children}
     </div>
   );

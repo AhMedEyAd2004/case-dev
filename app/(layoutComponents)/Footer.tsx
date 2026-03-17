@@ -1,5 +1,5 @@
 import React from "react";
-import MaxContainerWrap from "./max-container";
+import MaxContainerWrap from "../../components/max-container";
 
 export default function Footer() {
   return (

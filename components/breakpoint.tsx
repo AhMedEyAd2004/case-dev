@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 
 export default function WindowDimensions() {
   const [dimensions, setDimensions] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: 0,
+    height: 0,
   });
 
   const getBreakpoint = (width: number) => {
@@ -17,6 +17,12 @@ export default function WindowDimensions() {
   };
 
   useEffect(() => {
+    window.addEventListener("DOMContentLoaded", () =>
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      }),
+    );
     const handleResize = () => {
       setDimensions({
         width: window.innerWidth,

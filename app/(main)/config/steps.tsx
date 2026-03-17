@@ -19,7 +19,7 @@ export const STEPS = [
     image: "/snake-3.png",
     title: "Summary",
     description: "Review your final design",
-    pathname: "/config/review",
+    pathname: "/config/preview",
   },
 ];
 
@@ -31,7 +31,11 @@ export default function Steps() {
           {STEPS.map((s, index) => {
             return (
               <div key={index} className="relative flex flex-1 basis-auto bg-white">
-                <div className="relative flex flex-1 items-center gap-4 px-6 py-3.5">
+                <StepIndicator
+                  index={index}
+                  stepPathname={s.pathname}
+                  className="relative flex flex-1 items-center gap-4 px-6 py-3.5"
+                >
                   <Image
                     width={50}
                     height={80}
@@ -40,13 +44,14 @@ export default function Steps() {
                     alt={`snake${index + 1}`}
                   />
                   <div className="flex flex-col text-sm">
-                    <p className="font-semibold text-zinc-700">
+                    <p className="font-semibold text-(--step-color) transition-colors duration-300">
                       Step {index + 1}: {s.title}
                     </p>
-                    <p className="font-semibold text-zinc-500">{s.description}</p>
+                    <p className="font-semibold text-(--step-color)/70 transition-colors duration-300">
+                      {s.description}
+                    </p>
                   </div>
-                  <StepIndicator index={index} stepPathname={s.pathname} />
-                </div>
+                </StepIndicator>
                 {index !== 0 && (
                   <Separator className="absolute left-0 hidden h-full w-3 text-gray-300 lg:block" />
                 )}

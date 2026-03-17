@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
-import {  Recursive } from "next/font/google";
+import { Recursive } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/nav-bar";
-import WindowDimensions from "@/components/breakpoint";
-import Footer from "@/components/Footer";
 import { Toaster } from "sonner";
 
 const recursice = Recursive({
@@ -26,12 +23,7 @@ export default function RootLayout({
       <body
         className={`${recursice.variable} font-recursive overflow-x-hidden bg-slate-50 antialiased`}
       >
-        <Navbar />
-        <WindowDimensions />
-        <main className="flex min-h-[calc(100dvh-4rem)] flex-col">
-          <div className="flex-1">{children}</div>
-          <Footer />
-        </main>
+        {children}
         <Toaster />
       </body>
     </html>

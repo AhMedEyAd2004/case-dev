@@ -36,8 +36,15 @@ export default async function connectDB() {
 
   try {
     cached.conn = await cached.promise;
-  } catch (error) {
+  } catch (error: any) {
     cached.promise = null;
+    if (error.code === "ETIMEOUT" || error.syscall === "queryTxt") {
+      console.error(
+        "❌ MongoDB connection failed: Network is blocking the connection. Try switching networks or check your DNS settings.",
+      );
+    } else {
+      console.error("❌ MongoDB connection failed:", error);
+    }
     throw error;
   }
   return cached.conn;
