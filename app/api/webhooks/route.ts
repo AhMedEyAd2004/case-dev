@@ -1,3 +1,4 @@
+import connectDB from "@/lib/mongodb";
 import { stripe } from "@/lib/stripe";
 import { BillingAddress } from "@/models/BillingAddress";
 import { Order } from "@/models/OrderDetails";
@@ -7,7 +8,6 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
 export async function POST(req: NextRequest) {
-  console.error("there it is ");
   try {
     //raw body
     const body = await req.text();
@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
     const customerDetails = session.customer_details;
     const shippingDetails = session.collected_information?.shipping_details;
 
+    await connectDB();
     const shipping = await ShippingAddress.create({
       name: shippingDetails!.name,
       address: [shippingDetails?.address?.line1, shippingDetails?.address?.line2]
