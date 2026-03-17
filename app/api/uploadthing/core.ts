@@ -42,7 +42,7 @@ export const ourFileRouter = {
       await connectDB();
       if (!configId) {
         //in step 1 the configId is undefined which means i want to add the image properties to the database
-        const imageDetails = await ImageConfigurationcreate({
+        const imageDetails = await ImageConfiguration.create({
           width: width || 500,
           height: height || 500,
           imageUrl: file.ufsUrl,
@@ -51,7 +51,7 @@ export const ourFileRouter = {
         return { configId: imageDetails.id };
       } else {
         //there is configId, so the items exists in database, so i want to update the value of element of that id
-        await ImageConfigurationupdateOne(
+        await ImageConfiguration.updateOne(
           { _id: configId }, // filter
           {
             // WITH $set - only updates specified fields

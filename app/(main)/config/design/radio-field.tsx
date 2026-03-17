@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/field";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn, formatPrice } from "@/lib/utils";
-import { Finish, Materials } from "@/validators/option-validator";
+import { FINISH, MATERIALS } from "@/validators/option-validator";
 import { PRODUCTS_PRICE } from "@/validators/productPrice";
 
 type ProductAddonKey = keyof (typeof PRODUCTS_PRICE)[keyof typeof PRODUCTS_PRICE];
@@ -18,8 +18,8 @@ export function RadioGroupChoiceCard({
   className,
   setPrice,
 }: {
-  name: (typeof Materials | typeof Finish)["name"];
-  options: (typeof Materials | typeof Finish)["options"];
+  name: (typeof MATERIALS | typeof FINISH)["name"];
+  options: (typeof MATERIALS | typeof FINISH)["options"];
   setPrice: (val: ProductAddonKey) => void;
   className?: string;
 }) {
