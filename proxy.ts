@@ -10,7 +10,3 @@ export async function proxy(request: NextRequest) {
   console.log("Session:", session);
   if (!session) return NextResponse.redirect(new URL("/home", request.url));
 }
-
-export const config = {
-  matcher: ["/dashboard/:path*", "/"],
-};

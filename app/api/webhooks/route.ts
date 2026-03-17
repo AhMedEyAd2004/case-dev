@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
 export async function POST(req: NextRequest) {
+  console.error("there it is ");
   try {
     //raw body
     const body = await req.text();
@@ -32,7 +33,7 @@ export async function POST(req: NextRequest) {
     //the metadata passed in the action.ts in preview
     const { orderId, userId } = session.metadata!;
 
-    if (!userId || orderId) throw new Error("Invalid request metadata");
+    if (!userId || !orderId) throw new Error("Invalid request metadata");
 
     //to get the address input, in stripe page
     //customer might want to send the case to someone else
