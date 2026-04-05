@@ -31,69 +31,70 @@ export async function POST(req: NextRequest) {
     const session = event.data.object as Stripe.Checkout.Session;
     //if user paid the money
     //email is optional in stripe i want it
-    if (event.type === "checkout.session.completed")
+    if (event.type === "checkout.session.completed") {
       if (!session.customer_details?.email) throw new Error("Missing user email");
 
-    //the metadata passed in the action.ts in preview
-    const { orderId, userId } = session.metadata!;
+      //the metadata passed in the action.ts in preview
+      const { orderId, userId } = session.metadata!;
 
-    if (!userId || !orderId) throw new Error("Invalid request metadata");
+      if (!userId || !orderId) throw new Error("Invalid request metadata");
 
-    //to get the address input, in stripe page
-    //customer might want to send the case to someone else
-    const customerDetails = session.customer_details;
-    const shippingDetails = session.collected_information?.shipping_details;
+      //to get the address input, in stripe page
+      //customer might want to send the case to someone else
+      const customerDetails = session.customer_details;
+      const shippingDetails = session.collected_information?.shipping_details;
 
-    await connectDB();
-    const shipping = await ShippingAddress.create({
-      name: shippingDetails!.name,
-      address: [shippingDetails?.address?.line1, shippingDetails?.address?.line2]
-        .filter(Boolean)
-        .join("__--__"),
-      city: shippingDetails!.address.city,
-      country: shippingDetails!.address.country,
-      phone: customerDetails?.phone,
-    });
+      await connectDB();
+      const shipping = await ShippingAddress.create({
+        name: shippingDetails!.name,
+        address: [shippingDetails?.address?.line1, shippingDetails?.address?.line2]
+          .filter(Boolean)
+          .join("__--__"),
+        city: shippingDetails!.address.city,
+        country: shippingDetails!.address.country,
+        phone: customerDetails?.phone,
+      });
 
-    const billing = await BillingAddress.create({
-      city: customerDetails?.address?.city,
-      country: customerDetails?.address?.country,
-      address: [customerDetails?.address?.line1, customerDetails?.address?.line2]
-        .filter(Boolean)
-        .join("__--__"),
-    });
+      const billing = await BillingAddress.create({
+        city: customerDetails?.address?.city,
+        country: customerDetails?.address?.country,
+        address: [customerDetails?.address?.line1, customerDetails?.address?.line2]
+          .filter(Boolean)
+          .join("__--__"),
+      });
 
-    const order = await Order.findByIdAndUpdate(orderId, {
-      $set: {
-        isPaid: true,
-        userId: userId,
-        shippingAddressId: shipping._id.toString(),
-        billingAddressId: billing._id.toString(),
-      },
-    });
-
-    const { data, error } = await resend.emails.send({
-      from: "CaseCobra <ahmedeyad2872004@gmail.com>", //<email that u logged in with at resend >
-      to: [session.customer_details!.email!],
-      subject: "Thanks for your order!",
-      react: OrderReceivedEmail({
-        shippingAddress: {
-          ...shipping,
-          createdAt: order!.createdAt!.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          }),
+      const order = await Order.findByIdAndUpdate(orderId, {
+        $set: {
+          isPaid: true,
+          userId: userId,
+          shippingAddressId: shipping._id.toString(),
+          billingAddressId: billing._id.toString(),
         },
-        orderId,
-      }),
-    });
+      });
 
-    if (error) {
-      return NextResponse.json({ error }, { status: 500 });
+      const { data, error } = await resend.emails.send({
+        from: "CaseCobra <onboarding@resend.dev>",
+        to: [session.customer_details!.email!],
+        subject: "Thanks for your order!",
+        react: OrderReceivedEmail({
+          shippingAddress: {
+            ...shipping.toObject(),
+            createdAt: order!.createdAt!.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            }),
+          },
+          orderId,
+        }),
+      });
+
+      if (error) {
+        return NextResponse.json({ error }, { status: 500 });
+      }
+      return NextResponse.json({ resendData: data, result: event, ok: true });
     }
-
-    return NextResponse.json({ resendData: data, result: event, ok: true });
+    return NextResponse.json({ ok: true });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: "Something went wrong", ok: false }, { status: 500 });
