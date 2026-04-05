@@ -19,7 +19,7 @@ export default function NavbarTabs() {
   const pathname = usePathname();
   const tabsToDisplay = session ? [...TABS_WHEN_AUTH] : [...TABS_WHEN_NOT_AUTH];
 
-  if (pathname === TABS_WHEN_AUTH[1].link) tabsToDisplay.pop();
+  if (pathname === tabsToDisplay[1].link) tabsToDisplay.pop();
   return (
     <ul className="flex gap-4 text-xs">
       {isPending || isRefetching ? (
@@ -34,6 +34,7 @@ export default function NavbarTabs() {
                   ? async (e) => {
                       e.preventDefault();
                       await authClient.signOut();
+                      
                     }
                   : undefined
               }
