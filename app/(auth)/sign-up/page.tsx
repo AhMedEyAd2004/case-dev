@@ -38,8 +38,10 @@ export default function SignUpPage() {
     try {
       const result = await signUp.email({ ...formData });
       if (result.error) throw new Error(result.error.message);
-      else if (configIdRef.current) router.push(`/config/preview?id=${configIdRef.current}`);
-      else router.push("/home");
+      else if (configIdRef.current) {
+        localStorage.removeItem("configId");
+        router.push(`/config/preview?id=${configIdRef.current}`);
+      } else router.push("/home");
     } catch (error) {
       console.error("Error during sign up:", error);
     } finally {
@@ -48,7 +50,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-blue-50 to-indigo-100 px-4 py-12">
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-blue-50 to-green-100 px-4 py-12">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl">
         <div className="mb-8 text-center">
           <h1 className="mb-2 text-3xl font-bold text-gray-900">Create Account</h1>
@@ -67,7 +69,7 @@ export default function SignUpPage() {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className={`w-full rounded-lg border px-4 py-3 transition outline-none focus:border-transparent focus:ring-2 focus:ring-indigo-500`}
+              className={`w-full rounded-lg border px-4 py-3 transition outline-none focus:border-transparent focus:ring-2 focus:ring-green-500`}
               placeholder="John Doe"
             />
           </div>
@@ -82,7 +84,7 @@ export default function SignUpPage() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={`w-full rounded-lg border px-4 py-3 transition outline-none focus:border-transparent focus:ring-2 focus:ring-indigo-500`}
+              className={`w-full rounded-lg border px-4 py-3 transition outline-none focus:border-transparent focus:ring-2 focus:ring-green-500`}
               placeholder="you@example.com"
             />
           </div>
@@ -98,7 +100,7 @@ export default function SignUpPage() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className={`w-full rounded-lg border px-4 py-3 transition outline-none focus:border-transparent focus:ring-2 focus:ring-indigo-500`}
+              className={`w-full rounded-lg border px-4 py-3 transition outline-none focus:border-transparent focus:ring-2 focus:ring-green-500`}
               placeholder="••••••••"
             />
           </div>
@@ -107,7 +109,7 @@ export default function SignUpPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-indigo-600 py-3 font-semibold text-white transition hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-200 disabled:cursor-not-allowed disabled:opacity-50"
+            className="w-full rounded-lg bg-green-600 py-3 font-semibold text-white transition hover:bg-green-600/80 focus:ring-4 focus:ring-green-200 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? "Creating Account..." : "Sign Up"}
           </button>
@@ -116,7 +118,7 @@ export default function SignUpPage() {
         {/* Footer */}
         <p className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link href="/sign-in" className="font-medium text-indigo-600 hover:text-indigo-700">
+          <Link href="/sign-in" className="font-medium text-green-500 hover:text-green-700">
             Sign In
           </Link>
         </p>

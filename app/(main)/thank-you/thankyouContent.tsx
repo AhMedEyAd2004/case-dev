@@ -70,6 +70,13 @@ export default function ThankYouClient({ orderId }: { orderId: string }) {
         <section className="flex max-w-3xl flex-col px-1.5 md:mx-auto md:px-8">
           <div className="mb-12">
             <p className="font-semibold text-green-600">Thank you!</p>
+            <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-green-500/20 px-3 py-1 text-sm font-medium text-green-700 ring-1 ring-green-600/20">
+              <div className="relative size-2 rounded-full">
+                <div className="absolute top-1/2 left-1/2 size-2 -translate-1/2 animate-ping rounded-full bg-green-600" />
+                <div className="absolute top-1/2 left-1/2 size-1.5 -translate-1/2 rounded-full bg-green-600" />
+              </div>
+              Order confirmed — Details have been sent to your email
+            </div>
             <h4 className="my-2 text-4xl font-bold tracking-tight md:text-5xl">
               Your case is on the way!
             </h4>
@@ -109,6 +116,7 @@ export default function ThankYouClient({ orderId }: { orderId: string }) {
             />
 
             <Image
+              placeholder="blur"
               src={clearPhone}
               alt="your-new-case"
               className="pointer-events-none relative z-50! opacity-100 select-none"

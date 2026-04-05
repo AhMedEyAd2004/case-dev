@@ -34,8 +34,10 @@ export default function SignInPage() {
     try {
       const result = await signIn.email({ ...formData });
       if (result.error) throw new Error(result.error.message);
-      else if (configIdRef.current) router.push(`/config/preview?id=${configIdRef.current}`);
-      else router.push("/home");
+      else if (configIdRef.current) {
+        localStorage.removeItem("configId");
+        router.push(`/config/preview?id=${configIdRef.current}`);
+      } else router.push("/home");
     } catch (error) {
       console.error("Error during sign in:", error);
     } finally {
