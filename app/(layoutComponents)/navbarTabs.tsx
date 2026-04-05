@@ -38,7 +38,7 @@ export default function NavbarTabs() {
                   : undefined
               }
             >
-              t.label
+              {t.label}
             </Link>
           </li>
         ))
