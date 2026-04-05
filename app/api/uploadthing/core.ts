@@ -1,5 +1,5 @@
 import connectDB from "@/lib/mongodb";
-import { ImageConfiguration, ImageConfigSchema } from "@/models/ImageConfig";
+import { ImageConfiguration, ImageConfigValidator } from "@/models/ImageConfig";
 import sharp from "sharp";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { z } from "zod";
@@ -23,7 +23,7 @@ export const ourFileRouter = {
     .input(
       z.object({
         configId: z.string().optional(),
-        options: ImageConfigSchema.shape.options.optional(),
+        options: ImageConfigValidator.shape.options.optional(),
       }),
     )
     .middleware(async ({ input }) => {

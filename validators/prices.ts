@@ -8,3 +8,5 @@ export const PRODUCTS_PRICE = {
     textured: 3_00, //means 500 cents, the _ is good way for formatting large numbers like 5,00
   },
 } as const;
+
+export const SHIPPING_PRICE = 5_00;

@@ -7,7 +7,8 @@ type ModelValues = (typeof MODELS.options)[number]["value"]; // "iPhoneX" | "iPh
 type MaterialValues = (typeof MATERIALS.options)[number]["value"]; // "silicon" | "polycarbonate"
 type FinishValues = (typeof FINISH.options)[number]["value"]; // "smooth" | "textured"
 
-export const ImageConfigSchema = z.object({
+export const ImageConfigValidator = z.object({
+  _id: z.instanceof(mongoose.Types.ObjectId).optional(),
   width: z.number(),
   height: z.number(),
   croppedImageUrl: z.string().optional(),
@@ -28,7 +29,7 @@ export const ImageConfigSchema = z.object({
     .optional(),
 });
 
-export type TImageConfig = z.infer<typeof ImageConfigSchema>;
+export type TImageConfig = z.infer<typeof ImageConfigValidator>;
 
 const ImageConfig = new mongoose.Schema<TImageConfig>({
   width: { type: Number },

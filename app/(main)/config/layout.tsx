@@ -15,7 +15,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         fill
         className="pointer-events-none -z-10 select-none"
       />
-      <MaxContainerWrap className="flex min-h-[calc(100dvh-(4rem+4rem+8px))] w-full flex-1 flex-col gap-16 pt-14 pb-10">
+      <MaxContainerWrap className="flex min-h-[calc(100dvh-(4rem+4rem+8px))] w-full flex-1 flex-col gap-16 pb-10">
         <Steps />
         <span className="flex flex-1 flex-col">{children}</span>
       </MaxContainerWrap>

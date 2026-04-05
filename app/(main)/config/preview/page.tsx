@@ -8,12 +8,10 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import CheckOutBtn from "./checkOut-button";
 import { getCheckoutSession } from "./actions";
-import { auth } from "@/lib/auth/auth";
-import { headers } from "next/headers";
 import ReactConfettiComp from "./react-confetti";
 
 export default async function Preview({ searchParams }: { searchParams: Promise<{ id: string }> }) {
-  const id = (await searchParams).id; //69b35c558bc356f2358da6c7
+  const id = (await searchParams).id;
   await connectDB();
   const config = await ImageConfiguration.findById(id).lean<TImageConfig>();
   console.log(config);
@@ -56,7 +54,12 @@ export default async function Preview({ searchParams }: { searchParams: Promise<
             `bg-${CASE_COLORS.options.find((c) => c.value === config.options?.caseColor)?.tw}`,
           )}
         />
-        <Image fill src={config.croppedImageUrl} alt="your modified Image" className="z-30" />
+        <Image
+          fill
+          src={config.croppedImageUrl}
+          alt="your modified Image"
+          className="z-30 mx-auto h-[calc(100%-2px)]! w-[calc(100%-6px)]! rounded-3xl md:h-120.75 md:rounded-[32px]"
+        />
       </div>
 
       <div>

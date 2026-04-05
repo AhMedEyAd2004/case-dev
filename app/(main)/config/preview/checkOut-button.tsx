@@ -59,7 +59,7 @@ const ModalContent = () => {
 export default function CheckOutBtn({ configId }: { configId: string }) {
   const [open, setOpen] = useState(false);
   const { pending } = useFormStatus();
-  const { data } = useSession();
+  const { data, isPending, isRefetching } = useSession();
   const isDesktop = useMediaQuery({ minWidth: 640 });
 
   const saveConfigIdToStorage = () => {
@@ -76,7 +76,7 @@ export default function CheckOutBtn({ configId }: { configId: string }) {
         saveConfigIdToStorage();
         setOpen(true);
       }}
-      loading={pending ? <Loader2 className="animate-spin" /> : null}
+      loading={pending || isRefetching || isPending ? <Loader2 className="animate-spin" /> : null}
     />
   );
 

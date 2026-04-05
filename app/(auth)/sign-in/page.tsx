@@ -11,7 +11,7 @@ export default function SignInPage() {
   });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const configIdRef=useRef<string|undefined>(undefined)
+  const configIdRef = useRef<string | undefined>(undefined);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -23,8 +23,8 @@ export default function SignInPage() {
 
   useEffect(() => {
     const configId = localStorage.getItem("configId");
-    if (configId) configIdRef.current=configId;
-    console.log(configIdRef.current)
+    if (configId) configIdRef.current = configId;
+    console.log(configIdRef.current);
   }, []);
 
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
@@ -34,7 +34,7 @@ export default function SignInPage() {
     try {
       const result = await signIn.email({ ...formData });
       if (result.error) throw new Error(result.error.message);
-      else if (configIdRef.current) router.push(`/config/preview?id=${configIdRef.current}`)
+      else if (configIdRef.current) router.push(`/config/preview?id=${configIdRef.current}`);
       else router.push("/home");
     } catch (error) {
       console.error("Error during sign in:", error);

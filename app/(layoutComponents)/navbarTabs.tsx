@@ -1,9 +1,11 @@
 "use client";
 
 import { authClient } from "@/lib/auth/auth-client";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 
 const TABS_WHEN_AUTH = [{ label: "Logout", link: "/home" }];
+const TABS_WHEN_ADMIN = [{ label: "Dashboard ✨", link: "/dashboard" }];
 const TABS_WHEN_NOT_AUTH = [
   { label: "Sign up", link: "/sign-up" },
   { label: "Login", link: "/sign-in" },
@@ -11,15 +13,16 @@ const TABS_WHEN_NOT_AUTH = [
 
 export default function NavbarTabs() {
   const { data: session, isPending, isRefetching } = authClient.useSession();
-  const tabsToDisplay = session ? TABS_WHEN_AUTH : TABS_WHEN_NOT_AUTH;
-
+  const tabsToDisplay = session ? [...TABS_WHEN_AUTH] : [...TABS_WHEN_NOT_AUTH];
+  const isAdmin = true;
+  if (isAdmin) tabsToDisplay.push(...TABS_WHEN_ADMIN);
   return (
     <ul className="flex gap-4 text-xs">
-      {tabsToDisplay.map((t, index) => (
-        <li key={index} className="px-3">
-          {isPending || isRefetching ? (
-            <div className="h-6 w-12 animate-pulse rounded bg-gray-200" />
-          ) : (
+      {isPending || isRefetching ? (
+        <Loader2 className="size-4 animate-spin text-green-600" />
+      ) : (
+        tabsToDisplay.map((t, index) => (
+          <li key={index} className="px-3">
             <Link
               href={t.link}
               onClick={
@@ -33,9 +36,9 @@ export default function NavbarTabs() {
             >
               {t.label}
             </Link>
-          )}
-        </li>
-      ))}
+          </li>
+        ))
+      )}
     </ul>
   );
 }

@@ -7,6 +7,8 @@ import WhatCustomerSay from "./what-customer-say";
 import StarsGroup from "@/components/stars-group";
 import WhatPeopleBuy from "./what-people-buy";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import CustomButton from "@/components/customButton";
 
 export default function Home() {
   //(done in the layout)calc the navbar height and subtract it from the viewport height to get the minimum height of the section.
@@ -22,7 +24,7 @@ export default function Home() {
     faster*/
 
   return (
-    <div className="min-h-[calc(100dvh-4rem)] pt-15 lg:pt-55">
+    <div className="min-h-[calc(100dvh-4rem)] pt-15 lg:pt-40">
       <MaxContainerWrap>
         <section className="mb-20 grid grid-rows-2 place-items-center lg:mb-30 lg:grid-cols-3 lg:grid-rows-1">
           <div className="relative flex flex-col lg:col-span-2">
@@ -155,10 +157,14 @@ export default function Home() {
               <Check className="text-green-500" />5 year print warranty
             </li>
           </ul>
-          <Button className="-mt-4 flex h-10 items-center justify-center gap-3 rounded-md bg-green-600 px-8! text-sm font-medium text-white shadow hover:bg-green-600/90">
-            <span className="text-center leading-[100%]">Create your case now</span>{" "}
-            <ArrowRight className="size-5" />
-          </Button>
+          <Link href={"/config/upload"}>
+            <CustomButton
+              className="mt-0 flex h-10 px-8! text-sm"
+              text="Create your case now"
+              iconPosition="end"
+              icon={<ArrowRight className="size-5" />}
+            />
+          </Link>
         </MaxContainerWrap>
       </section>
     </div>

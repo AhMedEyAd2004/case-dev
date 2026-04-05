@@ -6,7 +6,7 @@ import { stripe } from "@/lib/stripe";
 import { ImageConfiguration, TImageConfig } from "@/models/ImageConfig";
 import { Order, TOrder } from "@/models/OrderDetails";
 import { BASE_PRICE } from "@/validators/option-validator";
-import { PRODUCTS_PRICE } from "@/validators/productPrice";
+import { PRODUCTS_PRICE } from "@/validators/prices";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -50,7 +50,7 @@ export const getCheckoutSession = async (configId: string) => {
   });
 
   const stripeSession = await stripe.checkout.sessions.create({
-    success_url: `${process.env.STRIPE_BASE_URL}/thank-you?orderId=${order._id.toString()}`,
+    success_url: `${process.env.STRIPE_BASE_URL}/thank-you?orderId=${order._id!.toString()}`,
     cancel_url: `${process.env.STRIPE_BASE_URL}/config?preview=${configId}`,
     payment_method_types: ["card", "paypal"],
     mode: "payment",
@@ -64,7 +64,7 @@ export const getCheckoutSession = async (configId: string) => {
 
     metadata: {
       userId: data.user.id,
-      orderId: order._id.toString(),
+      orderId: order._id!.toString(),
     }, //for web hook from stripe, what stripe confirmed payment for (which user, and what did he buy)
     line_items: [{ price: product.default_price as string, quantity: 1 }], //you tell stripe what users actually buying
   });

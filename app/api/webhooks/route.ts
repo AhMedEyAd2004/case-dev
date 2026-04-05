@@ -6,6 +6,10 @@ import { ShippingAddress } from "@/models/ShippingAddress";
 import { headers } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { Resend } from "resend";
+import OrderReceivedEmail from "@/app/emails/orderReceivedEmail";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
   try {
@@ -59,14 +63,37 @@ export async function POST(req: NextRequest) {
         .join("__--__"),
     });
 
-    await Order.findByIdAndUpdate(orderId, {
+    const order = await Order.findByIdAndUpdate(orderId, {
       $set: {
         isPaid: true,
+        userId: userId,
         shippingAddressId: shipping._id.toString(),
         billingAddressId: billing._id.toString(),
       },
     });
-    return NextResponse.json({ result: event, ok: true });
+
+    const { data, error } = await resend.emails.send({
+      from: "CaseCobra <ahmedeyad2872004@gmail.com>", //<email that u logged in with at resend >
+      to: [session.customer_details!.email!],
+      subject: "Thanks for your order!",
+      react: OrderReceivedEmail({
+        shippingAddress: {
+          ...shipping,
+          createdAt: order!.createdAt!.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          }),
+        },
+        orderId,
+      }),
+    });
+
+    if (error) {
+      return NextResponse.json({ error }, { status: 500 });
+    }
+
+    return NextResponse.json({ resendData: data, result: event, ok: true });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ message: "Something went wrong", ok: false }, { status: 500 });

@@ -2,7 +2,7 @@
 // bg-blue-950 border-blue-950
 // bg-rose-950 border-rose-950
 
-import { PRODUCTS_PRICE } from "./productPrice";
+import { PRODUCTS_PRICE } from "./prices";
 
 export const CASE_COLORS = {
   name: "caseColor",

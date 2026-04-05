@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { z } from "zod";
 
 export const ShippingAddressValidator = z.object({
+  _id: z.instanceof(mongoose.Types.ObjectId).optional(),
   name: z.string().min(1, "name is required"),
   address: z.string().min(1, "address is required"),
   city: z.string().min(1, "City is required"),

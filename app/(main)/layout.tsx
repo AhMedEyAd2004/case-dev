@@ -11,8 +11,7 @@ export default function Layout({
   return (
     <>
       <Navbar />
-      <WindowDimensions />
-      <main className="flex flex-col">
+      <main className="mt-14 flex min-h-[calc(100dvh-56px)] flex-col">
         <div className="flex-1">{children}</div>
         <Footer />
       </main>

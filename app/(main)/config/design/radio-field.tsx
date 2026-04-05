@@ -8,7 +8,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn, formatPrice } from "@/lib/utils";
 import { FINISH, MATERIALS } from "@/validators/option-validator";
-import { PRODUCTS_PRICE } from "@/validators/productPrice";
+import { PRODUCTS_PRICE } from "@/validators/prices";
 
 type ProductAddonKey = keyof (typeof PRODUCTS_PRICE)[keyof typeof PRODUCTS_PRICE];
 
@@ -41,7 +41,7 @@ export function RadioGroupChoiceCard({
               <FieldTitle>{c.label}</FieldTitle>
               {c.description && <FieldDescription>{c.description}</FieldDescription>}
             </FieldContent>
-            <p>{formatPrice(c.price)}</p>
+            <p>{formatPrice(c.price / 100)}</p>
             <RadioGroupItem value={c.value} id={c.label} className="hidden" />
           </Field>
         </FieldLabel>

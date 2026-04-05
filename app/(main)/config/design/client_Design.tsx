@@ -17,7 +17,7 @@ import { InputHTMLAttributes, SubmitEvent, useRef, useState, useTransition } fro
 import { TImageConfig } from "@/models/ImageConfig";
 import { Rnd } from "react-rnd";
 import { BASE_PRICE, CASE_COLORS, FINISH, MATERIALS, MODELS } from "@/validators/option-validator";
-import { PRODUCTS_PRICE } from "@/validators/productPrice";
+import { PRODUCTS_PRICE } from "@/validators/prices";
 import { toast } from "sonner";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useRouter } from "next/navigation";
@@ -41,8 +41,8 @@ export default function Client_Design({
     CASE_COLORS.options[0],
   );
   const [addons, setAddons] = useState({
-    material: MATERIALS.options[0].price,
-    finish: FINISH.options[0].price,
+    material: MATERIALS.options[0].price / 100,
+    finish: FINISH.options[0].price / 100,
   });
 
   const [imageTransform, setImageTransform] = useState<ImageProps>({
@@ -191,7 +191,7 @@ export default function Client_Design({
           <div
             id="case-bg-color"
             className={cn(
-              "absolute top-1/2 left-1/2 z-20 h-120.75 w-[calc(100%-8px)] -translate-1/2 rounded-[32px]",
+              "absolute top-1/2 left-1/2 z-20 h-120.75 w-[calc(100%-6px)] -translate-1/2 rounded-[32px]",
               `bg-${caseColor.tw}`,
             )}
           />
@@ -299,7 +299,9 @@ export default function Client_Design({
         <div className="absolute bottom-0 w-full bg-white px-8">
           <Separator />
           <div className="flex flex-nowrap items-center justify-center gap-6 py-4">
-            <p>{formatPrice(BASE_PRICE + Number(addons.finish) + Number(addons.material) / 100)}</p>
+            <p>
+              {formatPrice((BASE_PRICE + Number(addons.finish) + Number(addons.material)) / 100)}
+            </p>
             <Button
               disabled={isUploading || isPending}
               className="h-8 flex-1 items-center justify-center gap-3 bg-green-600 text-xs text-white hover:bg-green-600/90 sm:flex"
@@ -307,14 +309,9 @@ export default function Client_Design({
               <div className="flex items-center justify-center gap-3 text-center leading-[100%]">
                 {isUploading ? (
                   <>
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center justify-center">
                       <p className="pr-2">Saving</p>
-                      {Array.from({ length: 3 }).map((_, i) => (
-                        <div
-                          key={i}
-                          className={`size-1 animate-bounce rounded-full bg-white duration-200 delay-[${i * 300}]`}
-                        />
-                      ))}
+                      <IrregularSpinner />
                     </div>
                   </>
                 ) : isPending ? (
@@ -354,3 +351,48 @@ const RadioBtn = ({
     />
   </label>
 );
+
+const IrregularSpinner = ({
+  size = 24,
+  color = "currentColor",
+  strokeWidth = 3,
+  className,
+}: {
+  size?: number;
+  color?: string;
+  strokeWidth?: number;
+  className?: string;
+}) => {
+  return (
+    <svg
+      width={size}
+      height={size}
+      stroke={color}
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <style>{`
+        .spinner_V8m1 {
+          transform-origin: center;
+          animation: spinner_zKoa 2s linear infinite;
+        }
+        .spinner_V8m1 circle {
+          stroke-linecap: round;
+          animation: spinner_YpZS 1.5s ease-in-out infinite;
+        }
+        @keyframes spinner_zKoa {
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes spinner_YpZS {
+          0%          { stroke-dasharray: 0 150;  stroke-dashoffset: 0;   }
+          47.5%       { stroke-dasharray: 42 150; stroke-dashoffset: -16; }
+          95%, 100%   { stroke-dasharray: 42 150; stroke-dashoffset: -59; }
+        }
+      `}</style>
+      <g className="spinner_V8m1">
+        <circle cx="12" cy="12" r="9.5" fill="none" strokeWidth={strokeWidth} />
+      </g>
+    </svg>
+  );
+};

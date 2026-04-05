@@ -19,6 +19,7 @@ export default function CustomButton({
   return (
     <Button
       {...props}
+      disabled={loading ? true : false}
       className={cn(
         "-mt-4 flex h-10 items-center justify-center gap-3 rounded-md bg-green-600 px-8! text-sm font-medium text-white shadow hover:bg-green-600/90",
         className,
